@@ -45,6 +45,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@types/mapbox-gl": "^2.7.15",
     "@types/node": "^20.4.5",
     "@types/validator": "^13.11.1",
     "autoprefixer": "^10.4.14",

@@ -4,6 +4,8 @@ import Headerinfo from "./headerinfo";
 import ImageScroller from "./imageScroller";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
+import Map from "../home/maps";
+import { LngLatLike } from "mapbox-gl";
 
 enum StoreType {
   CAFE_SIT_IN = "CAFE_SIT_IN",
@@ -11,8 +13,8 @@ enum StoreType {
   BAR_SIT_IN = "BAR_SIT_IN",
   NONE = "NONE",
 }
+
 export default function Page({
-  store,
 }: {
   store: {
     id: string;
@@ -40,6 +42,12 @@ export default function Page({
     };
   };
 }) {
+  const stores = [
+    { name: 'coffee1', coordinates: [40.7128, -74.0060] }, 
+    { name: 'coffee2', coordinates: [34.0522, -118.2437] },
+  ];
+  const liveLocation: LngLatLike = [51.5074, -0.1278]; 
+  
   return (
     <Layout>
       <>
@@ -53,6 +61,8 @@ export default function Page({
         </div>
         <div>Google Rating:</div>
         <div>Talk Coffee Rating:</div>
+
+        <Map liveLocation={liveLocation} stores={stores} />
       </>
     </Layout>
   );
