@@ -1,10 +1,12 @@
+"use client";
+
 import Head from "next/head";
 import Layout from "../layout";
 import Headerinfo from "./headerinfo";
 import ImageScroller from "./imageScroller";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
-import Map from "../home/maps";
+import createMap from "../home/maps";
 import { LngLatLike } from "mapbox-gl";
 
 enum StoreType {
@@ -43,10 +45,14 @@ export default function Page({
   };
 }) {
   const stores = [
-    { name: 'coffee1', coordinates: [40.7128, -74.0060] }, 
-    { name: 'coffee2', coordinates: [34.0522, -118.2437] },
+    { name: 'coffee1', coordinates: [-74.0060, 40.7128] },
+    { name: 'coffee2', coordinates: [-118.2437, 34.0522] },
+    // Add more store locations as needed
   ];
-  const liveLocation: LngLatLike = [51.5074, -0.1278]; 
+  const liveLocation: LngLatLike = [-0.1278, 51.5074]; // Reversed order of coordinates
+
+  // Call the createMap function to display the map
+  createMap("map-container", liveLocation, stores);
   
   return (
     <Layout>
@@ -61,8 +67,7 @@ export default function Page({
         </div>
         <div>Google Rating:</div>
         <div>Talk Coffee Rating:</div>
-
-        <Map liveLocation={liveLocation} stores={stores} />
+        <div id="map-container" style={{ height: "400px" }} />
       </>
     </Layout>
   );

@@ -3,12 +3,13 @@ import mapboxgl, { LngLatLike } from 'mapbox-gl';
 
 interface MapProps {
   liveLocation: LngLatLike;
-  stores: { name: string; coordinates: [number, number] }[];
+  stores: { name: string; coordinates: LngLatLike }[];
 }
 
+// Define the Map component
 const Map: React.FC<MapProps> = ({ liveLocation, stores }) => {
   useEffect(() => {
-    mapboxgl.accessToken = "sk.eyJ1IjoiZWRkeTI4MDUiLCJhIjoiY2xuZjc4bjRwMGpjeTJwdXBsMTlkZ2lqcyJ9.JK8S-46J09If1cbr8RDPkA"; 
+    mapboxgl.accessToken = "pk.eyJ1IjoiZWRkeTI4MDUiLCJhIjoiY2xuZjZ6MW5oMGp4YjJpdXBydGN4ZGRxayJ9.LIn7u8rJrHlpboKiZQuEhw"; 
 
     const map = new mapboxgl.Map({
       container: "map-container", 
