@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Home from "./home/page";
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 export const metadata: Metadata = {
   title: "Welcome to TalkCoffee!",

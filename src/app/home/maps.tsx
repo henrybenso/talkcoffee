@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
-import mapboxgl, { LngLatLike } from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
+import React, { useRef, useEffect, useState } from "react";
+import mapboxgl, { LngLatLike } from 'mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
+ 
+mapboxgl.accessToken = 'pk.eyJ1IjoiaGJlbnNvIiwiYSI6ImNsbDV2dTl0NjBjYzMzcnM4NTdrMDZyMTgifQ.VcDVcpA5edcvU_Ao7auekQ';
 
 interface MapProps {
   liveLocation: LngLatLike;
   stores: { name: string; coordinates: LngLatLike }[];
 }
 
-const Map: React.FC<MapProps> = ({ liveLocation, stores }) => {
+export default function Maps({ liveLocation, stores }) {
   useEffect(() => {
     mapboxgl.accessToken = "pk.eyJ1IjoiZWRkeTI4MDUiLCJhIjoiY2xuZjZ6MW5oMGp4YjJpdXBydGN4ZGRxayJ9.LIn7u8rJrHlpboKiZQuEhw";
 
@@ -17,6 +18,18 @@ const Map: React.FC<MapProps> = ({ liveLocation, stores }) => {
       center: liveLocation,
       zoom: 12,
     });
+
+    map.addControl(
+      new mapboxgl.GeolocateControl({
+          positionOptions: {
+              enableHighAccuracy: true
+          },
+          // When active the map will receive updates to the device's location as it changes.
+          trackUserLocation: true,
+          // Draw an arrow next to the location dot to indicate which direction the device is heading.
+          showUserHeading: true
+      })
+  );
 
     if (stores) {
       stores.forEach((store) => {
@@ -35,4 +48,3 @@ const Map: React.FC<MapProps> = ({ liveLocation, stores }) => {
   return <div id="map-container" style={{ height: "400px" }} />;
 };
 
-export default Map;
