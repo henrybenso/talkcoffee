@@ -111,3 +111,23 @@
 //     </div>
 //   );
 // }
+
+import Layout from "../layout";
+
+async function getStores() {
+  const res = await fetch("http://localhost:3000/api/store", {
+    next: {
+      revalidate: 0,
+    },
+  });
+
+  return res.json();
+}
+export default async function Page() {
+  const stores = await getStores();
+  return (
+    <Layout>
+      <div>hi</div>;
+    </Layout>
+  );
+}

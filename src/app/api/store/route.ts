@@ -106,6 +106,19 @@ type ServiceHoursType = {
 //   return NextResponse.json({ result });
 // }
 
+export async function GET() {
+  const result = await prisma.store.findMany({
+    include: {
+      avatar: true,
+      images: true,
+      serviceTypes: true,
+      serviceHours: true
+    }
+  });
+  console.log(result)
+  return Response.json({ result });
+}
+
 export async function POST(request: NextRequest) {
 
   cloudinary.config({

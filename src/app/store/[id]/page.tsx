@@ -1,31 +1,46 @@
 "use client";
 
-import { PrismaStoreType } from "@/app/types";
-import { usePathname } from "next/navigation";
+import Layout from "../../layout";
+import { CldImage } from "next-cloudinary";
+export const dynamicParams = true;
 
-export default function Page({
-  params,
-}: {
-  params: { store: PrismaStoreType };
-}) {
-  async function generateStaticParams() {
-    const path = usePathname();
-    const res = await fetch(`http://localhost:3000/api${path}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const store = await res.json();
-    console.log(store);
-    console.log(path);
-  }
-  const test = generateStaticParams();
+async function getStore(id) {
+  const store = await fetch(`http://localhost:3000/api/store/${id}`, {
+    next: {
+      revalidate: 60,
+    },
+  }).then((res) => res.json());
 
-  // console.log(test);
+  return store;
+}
+
+export default async function Page({ params }) {
+  const store = await getStore(params.id);
   return (
-    <div>
-      <h1>hello</h1>
-    </div>
+    <Layout>
+      <div>
+        <h1>{store.name}</h1>
+        <h2>{store.avatar.publicId}</h2>
+        <CldImage
+          src={store.avatar.publicId}
+          width="400"
+          height="400"
+          sizes="100vw"
+          alt="image of store"
+        />
+        <div>
+          {store.images.map((image) => (
+            <CldImage
+              src={image.publicId}
+              width="600"
+              height="600"
+              sizes="100vw"
+              alt="image of store"
+            />
+          ))}
+        </div>
+      </div>
+    </Layout>
   );
 }
 
