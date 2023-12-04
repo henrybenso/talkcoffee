@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import Result from "./result";
 import Suggestion from "./suggestion";
 import { PrismaStoreType } from "../types";
+import Buttons from "./buttons";
 
 export default function Search() {
   const [suggestionState, setSuggestionState] = useState([]);
@@ -108,6 +109,7 @@ export default function Search() {
         )}
       </div>
       <div className="pb-10"></div>
+      <div>{showButtons && <Buttons />}</div>
       <div>
         {showButtons && (
           <ol className="overflow-y-scroll max-h-fit bg-white storesList">

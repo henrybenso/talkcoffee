@@ -4,7 +4,7 @@ import Layout from "../../layout";
 import { CldImage } from "next-cloudinary";
 export const dynamicParams = true;
 
-async function getStore(id) {
+async function getStore(id: string) {
   const store = await fetch(`http://localhost:3000/api/store/${id}`, {
     next: {
       revalidate: 60,

@@ -59,6 +59,7 @@ export default async function Home({
             </Suspense> */}
             {/* <Results params={query, } /> */}
           </div>
+          <div></div>
         </h2>
       </>
     </Layout>
