@@ -1,9 +1,8 @@
-"use client";
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl, { LngLatLike } from "mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
 
-mapboxgl.accessToken =
-  "pk.eyJ1IjoiaGJlbnNvIiwiYSI6ImNsbDV2dTl0NjBjYzMzcnM4NTdrMDZyMTgifQ.VcDVcpA5edcvU_Ao7auekQ";
+// mapboxgl.accessToken =
+// "pk.eyJ1IjoiaGJlbnNvIiwiYSI6ImNsbDV2dTl0NjBjYzMzcnM4NTdrMDZyMTgifQ.VcDVcpA5edcvU_Ao7auekQ";
 
 interface MapProps {
   liveLocation: LngLatLike;
@@ -21,16 +20,15 @@ export default function Maps({ liveLocation }) {
   //     });
   //   }
   // };
-
   useEffect(() => {
     mapboxgl.accessToken =
       "pk.eyJ1IjoiZWRkeTI4MDUiLCJhIjoiY2xuZjZ6MW5oMGp4YjJpdXBydGN4ZGRxayJ9.LIn7u8rJrHlpboKiZQuEhw";
 
     const map = new mapboxgl.Map({
-      container: "map",
+      container: "map-container",
       style: "mapbox://styles/mapbox/streets-v11",
       center: liveLocation,
-      zoom: 1,
+      zoom: 12,
     });
 
     map.addControl(
@@ -59,10 +57,5 @@ export default function Maps({ liveLocation }) {
     };
   }, [liveLocation]);
 
-  return (
-    <div>
-      <div> id="map" </div>;
-      {/* <button onClick={getUserLocation}>GET</button> */}
-    </div>
-  );
+  return <div id="map-container" style={{ height: "400px" }} />;
 }
