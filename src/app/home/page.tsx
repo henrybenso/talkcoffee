@@ -5,6 +5,7 @@ import Layout from "../../app/layout";
 import Searchbar from "./searchbar";
 import { Button } from "@/components/ui/button";
 import { buttonVariants } from "@/components/ui/button";
+import Maps from "./maps";
 
 export default function Home({
   searchParams,
@@ -50,6 +51,9 @@ export default function Home({
         <h2 className="p-4">
           <Searchbar placeholder="Search stores..." />
         </h2>
+        <div className="absolute w-screen">
+          <Maps />
+        </div>
       </>
     </Layout>
   );

@@ -1,43 +1,44 @@
+"use client";
 import React, { useRef, useEffect, useState } from "react";
-import mapboxgl, { LngLatLike } from 'mapbox-gl';
+import mapboxgl, { LngLatLike } from "mapbox-gl";
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiaGJlbnNvIiwiYSI6ImNsbDV2dTl0NjBjYzMzcnM4NTdrMDZyMTgifQ.VcDVcpA5edcvU_Ao7auekQ';
+mapboxgl.accessToken =
+  "pk.eyJ1IjoiaGJlbnNvIiwiYSI6ImNsbDV2dTl0NjBjYzMzcnM4NTdrMDZyMTgifQ.VcDVcpA5edcvU_Ao7auekQ";
 
-interface Store {
-  name: string;
-  coordinates: LngLatLike;
-}
+// interface Store {
+//   name: string;
+//   coordinates: LngLatLike;
+// }
 
-interface MapProps {
-  liveLocation: LngLatLike;
-}
+// interface MapProps {
+//   liveLocation: LngLatLike;
+// }
 
-export default function Maps({ liveLocation }: MapProps) {
-  const [stores, setStores] = useState<Store[]>([]);
-  const [loading, setLoading] = useState(true);
+export default function Maps() {
+  // const [stores, setStores] = useState<Store[]>([]);
+  // const [loading, setLoading] = useState(true);
+  const [userLocation, setUserLocation] = useState<{}>({});
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('/api/stores'); // Replace with your API endpoint
-        const data = await response.json();
-        setStores(data.result);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching store data:', error);
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+  // if (navigator.geolocation) {
+  //   navigator.geolocation.getCurrentPosition(function (position) {
+  //     const { latitude, longitude } = position.coords;
+  //     setUserLocation({ latitude, longitude });
+  //   });
+  // }
 
   useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        const { latitude, longitude } = position.coords;
+        setUserLocation({ latitude, longitude });
+      });
+    }
+
     const map = new mapboxgl.Map({
-      container: "map-container",
+      container: "map",
       style: "mapbox://styles/mapbox/streets-v11",
-      center: liveLocation,
-      zoom: 12,
+      center: [-24, 42],
+      zoom: 1,
     });
 
     map.addControl(
@@ -50,23 +51,14 @@ export default function Maps({ liveLocation }: MapProps) {
       })
     );
 
-    if (!loading && stores.length > 0) {
-      stores.forEach((store) => {
-        new mapboxgl.Marker()
-          .setLngLat(store.coordinates)
-          .setPopup(new mapboxgl.Popup().setHTML(`<h3>${store.name}</h3>`))
-          .addTo(map);
-      });
-    }
-
-    return () => {
-      map.remove();
-    };
-  }, [liveLocation, stores, loading]);
-
-  return (
-    <div id="map-container" style={{ height: "400px" }}>
-      {loading && <p>Loading...</p>}
-    </div>
-  );
+    // if (!loading && stores.length > 0) {
+    //   stores.forEach((store) => {
+    //     new mapboxgl.Marker()
+    //       .setLngLat(store.coordinates)
+    //       .setPopup(new mapboxgl.Popup().setHTML(`<h3>${store.name}</h3>`))
+    //       .addTo(map);
+    //   });
+    // }
+  }, [userLocation]);
+  return <div className="h-2/6 w-screen" id="map"></div>;
 }
