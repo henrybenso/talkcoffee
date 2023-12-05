@@ -1,4 +1,3 @@
-"use client";
 import Image from "next/image";
 import styles from "./page.module.css";
 import Link from "next/link";
@@ -8,7 +7,8 @@ import { Suspense, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { buttonVariants } from "@/components/ui/button";
 import Results from "./result";
-import Maps from "./maps";
+import MapContainer from "./mapContainer";
+// import Maps from "./maps";
 
 export default async function Home({
   searchParams,
@@ -20,23 +20,23 @@ export default async function Home({
 }) {
   const query = searchParams?.query || "";
   // const currentPage = Number(searchParams?.page) || 1;
-  const [userLocation, setUserLocation] = useState<[number, number]>([0, 0]);
+  // const [userLocation, setUserLocation] = useState<[number, number]>([0, 0]);
 
-  const getUserLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setUserLocation([latitude, longitude]);
-        },
-        (error) => {
-          console.error("Error getting user location:", error);
-        }
-      );
-    } else {
-      console.error("Geolocation is not supported by this browser");
-    }
-  };
+  // const getUserLocation = () => {
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition(
+  //       (position) => {
+  //         const { latitude, longitude } = position.coords;
+  //         setUserLocation([latitude, longitude]);
+  //       },
+  //       (error) => {
+  //         console.error("Error getting user location:", error);
+  //       }
+  //     );
+  //   } else {
+  //     console.error("Geolocation is not supported by this browser");
+  //   }
+  // };
 
   return (
     <Layout>
@@ -79,10 +79,10 @@ export default async function Home({
             {/* <Results params={query, } /> */}
           </div>
           <div>
-            <Maps liveLocation={userLocation} />
+            <MapContainer />
           </div>
           <div>
-            <button onClick={getUserLocation}>Get user location</button>
+            {/* <button onClick={getUserLocation}>Get user location</button> */}
           </div>
         </h2>
       </>
