@@ -11,16 +11,16 @@ interface MapProps {
 }
 
 export default function Maps({ liveLocation }) {
-  const [userLocation, setUserLocation] = useState({});
+  // const [userLocation, setUserLocation] = useState({});
 
-  const getUserLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        setUserLocation({ latitude, longitude });
-      });
-    }
-  };
+  // const getUserLocation = () => {
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition((position) => {
+  //       const { latitude, longitude } = position.coords;
+  //       setUserLocation({ latitude, longitude });
+  //     });
+  //   }
+  // };
 
   useEffect(() => {
     mapboxgl.accessToken =
@@ -61,8 +61,8 @@ export default function Maps({ liveLocation }) {
 
   return (
     <div>
-      <div> id="map" style={{ height: "400px" }} </div>;
-      <button onClick={getUserLocation}>GET</button>
+      <div> id="map" </div>;
+      {/* <button onClick={getUserLocation}>GET</button> */}
     </div>
   );
 }
