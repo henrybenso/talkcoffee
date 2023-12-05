@@ -7,6 +7,7 @@ import { Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { buttonVariants } from "@/components/ui/button";
 import Results from "./result";
+import Maps from "./maps";
 
 export default async function Home({
   searchParams,
@@ -59,7 +60,9 @@ export default async function Home({
             </Suspense> */}
             {/* <Results params={query, } /> */}
           </div>
-          <div></div>
+          <div>
+            <Maps liveLocation={[12, 12]} />
+          </div>
         </h2>
       </>
     </Layout>
