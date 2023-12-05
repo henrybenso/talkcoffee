@@ -52,7 +52,7 @@ export default function Home({
           <Searchbar placeholder="Search stores..." />
         </h2>
         <div className="absolute w-screen">
-          <Maps />
+          <Maps liveLocation={[12, 12]} />
         </div>
       </>
     </Layout>
