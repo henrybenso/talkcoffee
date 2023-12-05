@@ -1,4 +1,3 @@
-"use client";
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl, { LngLatLike } from "mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
 
@@ -10,7 +9,7 @@ interface MapProps {
   stores: { name: string; coordinates: LngLatLike }[];
 }
 
-export default function Maps({ liveLocation }) {
+export default function Maps({ liveLocation, stores }) {
   useEffect(() => {
     mapboxgl.accessToken =
       "pk.eyJ1IjoiZWRkeTI4MDUiLCJhIjoiY2xuZjZ6MW5oMGp4YjJpdXBydGN4ZGRxayJ9.LIn7u8rJrHlpboKiZQuEhw";
@@ -34,19 +33,19 @@ export default function Maps({ liveLocation }) {
       })
     );
 
-    // if (stores) {
-    //   stores.forEach((store) => {
-    //     new mapboxgl.Marker()
-    //       .setLngLat(store.coordinates)
-    //       .setPopup(new mapboxgl.Popup().setHTML(`<h3>${store.name}</h3>`))
-    //       .addTo(map);
-    //   });
-    // }
+    if (stores) {
+      stores.forEach((store) => {
+        new mapboxgl.Marker()
+          .setLngLat(store.coordinates)
+          .setPopup(new mapboxgl.Popup().setHTML(`<h3>${store.name}</h3>`))
+          .addTo(map);
+      });
+    }
 
     return () => {
       map.remove();
     };
-  }, [liveLocation]);
+  }, [liveLocation, stores]);
 
   return <div id="map-container" style={{ height: "400px" }} />;
 }
