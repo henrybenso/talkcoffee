@@ -663,9 +663,6 @@ hover:file:bg-violet-100"
             </div>
 
             <Button type="submit">Submit</Button>
-            <button type="button" onClick={handleGetValues}>
-              Get values
-            </button>
           </form>
         </div>
       </Layout>
