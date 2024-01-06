@@ -1,5 +1,4 @@
 import { z } from 'zod'
-import validator from "validator";
 
 const REG = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
 export const VALUES = ["CAFE", "BAR"] as const;
@@ -33,13 +32,8 @@ export const schema = z.object({
     //   }
     //   return parsed;
     // }),
-    phoneNumber: z.string().refine(
-        (val) => validator.isMobilePhone(val),
-        (val) => ({
-            message: `${val}: Phone Nubmer is not valid`,
-        })
-    ),
     // phoneNumber: z.string().regex(new RegExp("^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$")),
+    phoneNumber: z.string(),
     instagramHandle: z.string(),
     avatar: z.any().refine((files) => files?.length == 1, "Image is required.")
         .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
@@ -154,13 +148,14 @@ export const schemaStoreBackend = z.object({
     //   }
     //   return parsed;
     // }),
-    phoneNumber: z.string().refine(
-        (val) => validator.isMobilePhone(val),
-        (val) => ({
-            message: `${val}: Phone Nubmer is not valid`,
-        })
-    ),
+    // phoneNumber: z.string().refine(
+    //     (val) => validator.isMobilePhone(val),
+    //     (val) => ({
+    //         message: `${val}: Phone Nubmer is not valid`,
+    //     })
+    // ),
     // phoneNumber: z.string().regex(new RegExp("^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$")),
+    phoneNumber: z.string(),
     instagramHandle: z.string().optional(),
     serviceTypes: z.object({
         sitIn: z.array(

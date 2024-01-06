@@ -7,7 +7,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { buttonVariants } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
-import validator from "validator";
 // import { useState } from "react";
 
 const MAX_COUNT = 5;
@@ -39,13 +38,14 @@ const schema = z.object({
     }
     return parsed;
   }),
-  phoneNumber: z.string().refine(
-    (val) => validator.isMobilePhone(val),
-    (val) => ({
-      message: "Phone Nubmer is not valid",
-    })
-  ),
+  // phoneNumber: z.string().refine(
+  //   (val) => validator.isMobilePhone(val),
+  //   (val) => ({
+  //     message: "Phone Nubmer is not valid",
+  //   })
+  // ),
   // phoneNumber: z.string().regex(new RegExp("^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$")),
+  phoneNumber: z.string(),
   instagramHandle: z.string().optional(),
   avatar: z.string().optional(),
   images: z.array(z.string()),
