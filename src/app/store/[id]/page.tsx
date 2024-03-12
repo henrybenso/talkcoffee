@@ -15,13 +15,17 @@ enum Days {
 }
 
 async function getStore(id: string) {
-  const store = await fetch(`http://localhost:3000/api/store/${id}`, {
+  const res = await fetch(`http://localhost:3000/api/store/${id}`, {
     next: {
       revalidate: 60,
     },
-  }).then((res) => res.json());
+  });
 
-  return store;
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
 }
 
 const AvatarImage = dynamic(() => import("./avatarImage"), {
