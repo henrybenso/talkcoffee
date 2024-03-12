@@ -6,3 +6,6 @@
 
 Examples of current build:
 ![example_image_one] (https://github.com/henrybenso/talkcoffee/blob/main/docs/images/Screenshot%202023-12-04%20at%2010.26.20%E2%80%AFPM.png)
+
+<!-- ![example_image_two] (https://github.com/henrybenso/talkcoffee/blob/main/docs/images/Screenshot%202023-12-04%20at%2010.26.20%E2%80%AFPM.png)
+![example_image_three] (https://github.com/henrybenso/talkcoffee/blob/main/docs/images/Screenshot%202023-12-04%20at%2010.26.20%E2%80%AFPM.png) -->
