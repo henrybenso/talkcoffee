@@ -108,35 +108,35 @@ export default function CreateStore() {
     console.log(data);
   };
 
-  async function submitForm(values: z.infer<typeof schema>) {
-    const {
-      name,
-      rating,
-      phoneNumber,
-      instagramHandle,
-      avatar,
-      images,
-      serviceTypes,
-      serviceHours,
-    } = values;
+  // async function submitForm(values: z.infer<typeof schema>) {
+  //   const {
+  //     name,
+  //     rating,
+  //     phoneNumber,
+  //     instagramHandle,
+  //     avatar,
+  //     images,
+  //     serviceTypes,
+  //     serviceHours,
+  //   } = values;
 
-    const formData = new FormData();
-    console.log(avatar[0]);
-    formData.append("avatar", avatar[0]);
-    formData.append("imageOne", images[0]);
-    formData.append("imageTwo", images[1]);
-    formData.append("imageThree", images[2]);
-    formData.append("imageFour", images[3]);
-    formData.append("imageFive", images[4]);
-    formData.append("store", JSON.stringify(values));
+  //   const formData = new FormData();
+  //   console.log(avatar[0]);
+  //   formData.append("avatar", avatar[0]);
+  //   formData.append("imageOne", images[0]);
+  //   formData.append("imageTwo", images[1]);
+  //   formData.append("imageThree", images[2]);
+  //   formData.append("imageFour", images[3]);
+  //   formData.append("imageFive", images[4]);
+  //   formData.append("store", JSON.stringify(values));
 
-    const res = await fetch("http://localhost:3000/api/store", {
-      method: "POST",
-      body: formData,
-    });
-    const result = await res.json();
-    console.log(result);
-  }
+  //   const res = await fetch("http://localhost:3000/api/store", {
+  //     method: "POST",
+  //     body: formData,
+  //   });
+  //   const result = await res.json();
+  //   console.log(result);
+  // }
 
   return (
     <>
@@ -150,7 +150,7 @@ export default function CreateStore() {
               add your store ☕
             </h1>
           </section>
-          <form onSubmit={handleSubmit(submitForm)} className="space-y-8">
+          <form onSubmit={handleGetValues} className="space-y-8">
             <div className="space-y-2">
               <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                 Store Name

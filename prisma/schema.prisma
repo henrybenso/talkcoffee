@@ -55,11 +55,11 @@ model ServiceTypes {
 }
 
 model ServiceHours {
-  id      String   @id @default(uuid())
+  id      String @id @default(uuid())
   day     Days
-  open    DateTime
-  close   DateTime
-  Store   Store    @relation(fields: [storeId], references: [id])
+  open    String
+  close   String
+  Store   Store  @relation(fields: [storeId], references: [id])
   storeId String
 }
 

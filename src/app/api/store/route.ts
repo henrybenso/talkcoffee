@@ -161,22 +161,27 @@ export async function POST(request: NextRequest) {
 
   const buffer = Buffer.from(await fileBlob.arrayBuffer());
   const storeData = parse.data
-  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  // const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const averageRating = parseInt(storeData.rating)
   const ratingCount = 1
   const sitIn = storeData.serviceTypes.sitIn
   const sitInArr: DineTypes[] = []
-  let date = new Date()
-  let dateToText = date.toISOString()
-  let currentDate: string = dateToText.slice(0, 10)
+  // let date = new Date()
+  // let dateToText = date.toISOString()
+  // let currentDate: string = dateToText.slice(0, 10)
 
   sitIn.map((obj) => {
     sitInArr.push(obj.value)
   })
 
+  // ! Don't allow blanks as default fields
   const arr = Object.keys(storeData.serviceHours).forEach((key) => {
     if (storeData.serviceHours[key].open === "" || storeData.serviceHours[key].close === "") {
-      delete storeData.serviceHours[key]
+      // delete storeData.serviceHours[key]
+      return NextResponse.json(
+        { error: "Open and/or Close fields cannot be blank" },
+        { status: 400 }
+      )
     }
   })
 
@@ -185,12 +190,12 @@ export async function POST(request: NextRequest) {
   const serviceHoursPromise = await Promise.all(keys.map(async (key) => {
     let currentDay = storeData.serviceHours[key as keyof ServiceHoursType]
     currentDay.day = (Days as Days)[key]
-    let formattedCloseDate = currentDate.concat(" ", currentDay.close)
-    let convertedCloseDate = await moment.tz(formattedCloseDate, timezone)
-    currentDay.close = convertedCloseDate.utc().format()
-    let formattedOpenDate = currentDate.concat(" ", currentDay.open)
-    let convertedOpenDate = await moment.tz(formattedOpenDate, timezone)
-    currentDay.open = convertedOpenDate.utc().format()
+    // let formattedCloseDate = currentDate.concat(" ", currentDay.close)
+    // let convertedCloseDate = await moment.tz(formattedCloseDate, timezone)
+    // currentDay.close = convertedCloseDate.utc().format()
+    // let formattedOpenDate = currentDate.concat(" ", currentDay.open)
+    // let convertedOpenDate = await moment.tz(formattedOpenDate, timezone)
+    // currentDay.open = convertedOpenDate.utc().format()
 
     return currentDay
   }))
@@ -199,6 +204,8 @@ export async function POST(request: NextRequest) {
   const imageData = await cloudinary.uploader.upload(filePath)
   fs.unlinkSync(filePath)
 
+
+  // 413, 415, 422
   const imagesPromise = await Promise.all(
     imagesArr.map(async (image) => {
       const imageFileName = (image as File).name;
