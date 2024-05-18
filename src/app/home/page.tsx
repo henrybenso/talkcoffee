@@ -3,6 +3,8 @@ import Layout from "../../app/layout";
 import Searchbar from "./searchbar";
 import { Suspense } from "react";
 import { buttonVariants } from "@/components/ui/button";
+import LoginButton from "../signin/loginButton";
+import Header from "./header";
 
 export default async function Home() {
   return (
@@ -10,18 +12,7 @@ export default async function Home() {
       <>
         <section className="">
           <div className="absolute top-0 right-0">
-            <Link
-              href="/signin"
-              className={buttonVariants({ variant: "outline" })}
-            >
-              Sign in
-            </Link>
-            <Link
-              href="/signup"
-              className={buttonVariants({ variant: "outline" })}
-            >
-              Sign up
-            </Link>
+            <Header />
           </div>
         </section>
         <section className="">
@@ -34,7 +25,7 @@ export default async function Home() {
         </section>
         <section>
           <h1 className="p-5 shrink-0 flex place-content-center">
-            <div className="text-5xl font-bold text-yellow-900">TalkCoffee</div>
+            <div className="text-5xl font-bold text-yellow-900">talkcoffee</div>
           </h1>
         </section>
 
