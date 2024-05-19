@@ -4,13 +4,27 @@ import { buttonVariants } from "@/components/ui/button";
 
 export default function Header() {
   return (
-    <header className="sticky flex justify-center space-x-4">
-      <div className="flex items-center justify-between w-full h-16 max-w-3xl px-4 mx-auto sm:px-6">
-        <LoginButton />
-        <Link href="/signup" className={buttonVariants({ variant: "outline" })}>
-          Sign up
-        </Link>
+    // <div className="sticky flex space-x-4">
+    // <div className="flex items-center justify-between w-full h-16 max-w-3xl px-4 mx-auto sm:px-6">
+    //   </div>
+    //   </div>
+    <header className="">
+      <div className="justify-between sticky flex space-x-4">
+        <div className="flex items-center h-16 max-w-3xl px-4 sm:px-6">
+          <Link
+            href="/store/create"
+            className={buttonVariants({ variant: "outline" })}
+          >
+            Add a Store
+          </Link>
+        </div>
+        <div className="flex items-center h-16 max-w-3xl px-4 sm:px-6">
+          <LoginButton />
+        </div>
       </div>
+      {/* <Link href="/signup" className={buttonVariants({ variant: "outline" })}>
+          Sign up
+        </Link> */}
     </header>
   );
 }

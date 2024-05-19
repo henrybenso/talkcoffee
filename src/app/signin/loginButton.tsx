@@ -8,8 +8,10 @@ export default async function LoginButton() {
 
   if (!session?.user) return <SignIn />;
   return (
-    <div>
-      <text>Hi, {session.user.email}</text>
-    </div>
+    // ! User's avatar here
+    // <div>
+    //   <text>Hi, {session.user.name}</text>
+    // </div>
+    <SignOut />
   );
 }

@@ -89,9 +89,9 @@ export default function CreateStore() {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [fileLimit, setFileLimit] = useState<boolean>(false);
 
-  const onSubmit = (data) => {
-    alert(JSON.stringify(data));
-  };
+  // const onSubmit = (data) => {
+  //   alert(JSON.stringify(data));
+  // };
 
   const handleGetValues = () => {
     console.log("Get Values", getValues());
@@ -198,7 +198,7 @@ export default function CreateStore() {
         <div className="grid place-content-center">
           <section>
             <div>
-              Are you are store owner? If so,
+              Are you a <b>business owner</b>? If so,
               <Link className="ml-2" href="/store/create-by-owner">
                 <Button>Click Here!</Button>
               </Link>
@@ -207,7 +207,7 @@ export default function CreateStore() {
               add a store ☕
             </h1>
           </section>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={handleSubmit(handleGetValues)} className="space-y-8">
             {/* <form onSubmit={handleSubmit((d) => console.log(d))} className="space-y-8"> */}
             <div className="space-y-2">
               <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">

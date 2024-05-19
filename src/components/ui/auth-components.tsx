@@ -1,5 +1,5 @@
 import { signIn, signOut } from "@/auth";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 
 export function SignIn({
   provider,
@@ -12,7 +12,13 @@ export function SignIn({
         await signIn("google");
       }}
     >
-      <Button {...props}>Sign In</Button>
+      <Button
+        variant="ghost"
+        className={buttonVariants({ variant: "outline" })}
+        {...props}
+      >
+        Sign In
+      </Button>
     </form>
   );
 }
@@ -26,7 +32,11 @@ export function SignOut(props: React.ComponentPropsWithRef<typeof Button>) {
       }}
       className="w-full"
     >
-      <Button variant="ghost" className="w-full p-0" {...props}>
+      <Button
+        variant="ghost"
+        className={buttonVariants({ variant: "outline" })}
+        {...props}
+      >
         Sign Out
       </Button>
     </form>
