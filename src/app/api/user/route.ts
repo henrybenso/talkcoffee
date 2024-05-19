@@ -1,22 +1,31 @@
-// import { NextResponse } from "next/server";
-// import { prisma } from "../../../../db";
+import { NextResponse } from "next/server";
+import { prisma } from "../../../../db";
 
-// export async function GET(req: Request) {
-//   const cred = req.credentials;
-//   // const requestHeaders: HeadersInit = new Headers();
-//   // requestHeaders.set("Content-Type", "API-Key");
-//   // const res = await fetch("", {
-//   //   // headers: requestHeaders,
-//   // });
-//   const result = await prisma.user.findUnique({
-//     where: {
-//       email: userEmail,
-//     },
-//   });
-//   const data = await result.json();
+export async function GET(req: Request) {
+    const cred: { email: string, passHash: string } = await req.json();
+    const userEmail = cred.email;
+    // const requestHeaders: HeadersInit = new Headers();
+    // requestHeaders.set("Content-Type", "API-Key");
+    // const res = await fetch("", {
+    //   // headers: requestHeaders,
+    // });
+    const result = await prisma.user.findUnique({
+        where: {
+            email: userEmail,
 
-//   return NextResponse.json({ data });
-// }
+        },
+    });
+
+    if (!result?.email) {
+        return NextResponse.json({ error: "User not found" });
+    }
+
+    if (result.passwordHash !== cred.passHash) {
+        return NextResponse.json({ error: "Incorrect password" });
+    }
+
+    return NextResponse.json({ result });
+}
 
 // export const RoleTypes: {
 //   BASIC: "BASIC";
