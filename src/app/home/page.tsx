@@ -3,7 +3,6 @@ import Layout from "../../app/layout";
 import Searchbar from "./searchbar";
 import { Suspense } from "react";
 import { buttonVariants } from "@/components/ui/button";
-import LoginButton from "../signin/loginButton";
 import Header from "./header";
 
 export default async function Home() {
