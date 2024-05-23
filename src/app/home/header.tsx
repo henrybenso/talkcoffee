@@ -21,6 +21,14 @@ export default function Header() {
         <div className="flex items-center h-16 max-w-3xl px-4 sm:px-6">
           <LoginButton />
         </div>
+        <div className="flex items-center h-16 max-w-3xl px-4 sm:px-6">
+          <Link
+            href="/signup"
+            className={buttonVariants({ variant: "outline" })}
+          >
+            Temp Sign up
+          </Link>
+        </div>
       </div>
       {/* <Link href="/signup" className={buttonVariants({ variant: "outline" })}>
           Sign up

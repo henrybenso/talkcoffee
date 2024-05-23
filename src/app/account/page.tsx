@@ -1,5 +1,5 @@
-import Layout from "@/app/layout";
-import { auth } from "@/auth";
+import Layout from "../layout";
+import { auth } from "../../auth";
 
 async function getUser(id: string | undefined) {
   const res = await fetch(`http://localhost:3000/api/user/${id}`, {
@@ -24,7 +24,9 @@ export default async function Page() {
     <Layout>
       <div>
         <div className="flex flex-col items-center justify-center h-screen">
-          <h1 className="text-4xl font-bold">Account</h1>
+          <h1 className="text-4xl font-bold">
+            Account name: ${user.username ?? "No Username"}
+          </h1>
           <p className="mt-4">Find me in src/app/account/page.tsx</p>
         </div>
       </div>

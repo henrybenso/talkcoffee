@@ -8,11 +8,23 @@ CREATE TYPE "DineTypes" AS ENUM ('CAFE', 'BAR');
 CREATE TYPE "Days" AS ENUM ('SUN', 'MON', 'TUE', 'WED', 'TR', 'FRI', 'SAT');
 
 -- CreateTable
+CREATE TABLE "TempUser" (
+    "id" TEXT NOT NULL,
+    "username" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "avatar" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "TempUser_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "username" TEXT NOT NULL,
-    "beans" DOUBLE PRECISION NOT NULL DEFAULT 0.0,
+    "beans" INTEGER NOT NULL DEFAULT 0,
     "passwordHash" TEXT NOT NULL,
     "avatar" TEXT,
     "firstName" TEXT,
@@ -57,8 +69,8 @@ CREATE TABLE "ServiceTypes" (
 CREATE TABLE "ServiceHours" (
     "id" TEXT NOT NULL,
     "day" "Days" NOT NULL,
-    "open" TIMESTAMP(3) NOT NULL,
-    "close" TIMESTAMP(3) NOT NULL,
+    "open" TEXT NOT NULL,
+    "close" TEXT NOT NULL,
     "storeId" TEXT NOT NULL,
 
     CONSTRAINT "ServiceHours_pkey" PRIMARY KEY ("id")
@@ -84,6 +96,9 @@ CREATE TABLE "Image" (
 
     CONSTRAINT "Image_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "TempUser_username_key" ON "TempUser"("username");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
