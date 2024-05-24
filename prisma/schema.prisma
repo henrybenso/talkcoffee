@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
@@ -10,102 +11,156 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model TempUser {
-  id        String   @id @default(uuid())
-  username  String   @unique
-  password  String
-  avatar    String?
+// model TempUser {
+//   id        String   @id @default(uuid())
+//   username  String   @unique
+//   password  String
+//   avatar    String?
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
+
+// model User {
+//   id           String    @id @default(uuid())
+//   email        String    @unique
+//   username     String    @unique
+//   beans        Int       @default(0)
+//   passwordHash String
+//   avatar       String?
+//   firstName    String?
+//   lastName     String?
+//   age          Int?
+//   role         Role      @default(BASIC)
+//   birthDate    DateTime?
+//   createdAt    DateTime  @default(now())
+//   updatedAt    DateTime  @updatedAt
+
+//   @@index([email])
+// }
+
+// model Store {
+//   id              String         @id @default(uuid())
+//   name            String
+//   averageRating   Float
+//   ratingCount     Int
+//   phoneNumber     String?
+//   instagramHandle String
+//   avatar          AvatarImage    @relation(fields: [avatarImageId], references: [id])
+//   avatarImageId   String         @unique
+//   images          Image[]
+//   createdAt       DateTime       @default(now())
+//   updatedAt       DateTime       @updatedAt
+//   serviceTypes    ServiceTypes   @relation(fields: [serviceTypesId], references: [id])
+//   serviceTypesId  String         @unique
+//   serviceHours    ServiceHours[]
+// }
+
+// model ServiceTypes {
+//   id             String      @id @default(uuid())
+//   sitIn          DineTypes[]
+//   takeOut        Boolean
+//   delivery       Boolean
+//   curbsidePickup Boolean
+//   Store          Store?
+// }
+
+// model ServiceHours {
+//   id      String @id @default(uuid())
+//   day     Days
+//   open    String
+//   close   String
+//   Store   Store  @relation(fields: [storeId], references: [id])
+//   storeId String
+// }
+
+// model AvatarImage {
+//   id       String @id @default(cuid())
+//   publicId String @unique
+//   format   String
+//   version  String
+//   Store    Store?
+// }
+
+// model Image {
+//   id       String @id @default(cuid())
+//   publicId String @unique
+//   format   String
+//   version  String
+//   Store    Store  @relation(fields: [storeId], references: [id])
+//   storeId  String
+// }
+
+// enum Role {
+//   BASIC
+//   PREMIUM
+//   ADMIN
+// }
+
+// enum DineTypes {
+//   CAFE
+//   BAR
+// }
+
+// enum Days {
+//   SUN
+//   MON
+//   TUE
+//   WED
+//   TR
+//   FRI
+//   SAT
+// }
+
+// ----------------------------------------------------------
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model User {
-  id           String    @id @default(uuid())
-  email        String    @unique
-  username     String    @unique
-  beans        Int       @default(0)
-  passwordHash String
-  avatar       String?
-  firstName    String?
-  lastName     String?
-  age          Int?
-  role         Role      @default(BASIC)
-  birthDate    DateTime?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
 
-  @@index([email])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
 }
 
-model Store {
-  id              String         @id @default(uuid())
-  name            String
-  averageRating   Float
-  ratingCount     Int
-  phoneNumber     String?
-  instagramHandle String
-  avatar          AvatarImage    @relation(fields: [avatarImageId], references: [id])
-  avatarImageId   String         @unique
-  images          Image[]
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-  serviceTypes    ServiceTypes   @relation(fields: [serviceTypesId], references: [id])
-  serviceTypesId  String         @unique
-  serviceHours    ServiceHours[]
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model ServiceTypes {
-  id             String      @id @default(uuid())
-  sitIn          DineTypes[]
-  takeOut        Boolean
-  delivery       Boolean
-  curbsidePickup Boolean
-  Store          Store?
-}
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
 
-model ServiceHours {
-  id      String @id @default(uuid())
-  day     Days
-  open    String
-  close   String
-  Store   Store  @relation(fields: [storeId], references: [id])
-  storeId String
-}
-
-model AvatarImage {
-  id       String @id @default(cuid())
-  publicId String @unique
-  format   String
-  version  String
-  Store    Store?
-}
-
-model Image {
-  id       String @id @default(cuid())
-  publicId String @unique
-  format   String
-  version  String
-  Store    Store  @relation(fields: [storeId], references: [id])
-  storeId  String
-}
-
-enum Role {
-  BASIC
-  PREMIUM
-  ADMIN
-}
-
-enum DineTypes {
-  CAFE
-  BAR
-}
-
-enum Days {
-  SUN
-  MON
-  TUE
-  WED
-  TR
-  FRI
-  SAT
+  @@id([identifier, token])
 }
