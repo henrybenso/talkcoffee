@@ -1,8 +1,10 @@
+import * as argon2 from "argon2";
 import { NextResponse } from "next/server";
 import { prisma } from "../../../../db";
+import saltAndHashPassword from "@/utils/hash";
 
 export async function GET(req: Request) {
-    const cred: { email: string, passHash: string } = await req.json();
+    const cred: { email: string, password: string, passHash: string } = await req.json();
     const userEmail = cred.email;
     // const requestHeaders: HeadersInit = new Headers();
     // requestHeaders.set("Content-Type", "API-Key");
@@ -20,7 +22,14 @@ export async function GET(req: Request) {
         return NextResponse.json({ error: "User not found" });
     }
 
-    if (result.passwordHash !== cred.passHash) {
+    const verfiyPasswordHash = await saltAndHashPassword(cred.password);
+
+
+    // try {
+    //     if (await argon2.verify(verfiyPasswordHash, cred.password)) {
+
+    // }
+    if (result.passwordHash !== cred.passHash || result.passwordHash !== verfiyPasswordHash) {
         return NextResponse.json({ error: "Incorrect password" });
     }
 

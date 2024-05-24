@@ -3,8 +3,8 @@ import Google from "next-auth/providers/google"
 import Credentials from "next-auth/providers/credentials"
 import saltAndHashPassword from "@/utils/hash"
 
-async function getUser(params: { email: string, passHash: string }): Promise<any> {
-    const res = await fetch(`http://localhost:3000/api/user?email=${email}&passHash=${passHash}`, {
+async function getUser(params: { email: string, password: string, passHash: string }): Promise<any> {
+    const res = await fetch(`http://localhost:3000/api/user?email=${params.email}&password=${params.password}&passHash=${params.passHash}`, {
         headers: {
             "Content-Type": "application/json",
         },
@@ -38,7 +38,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
             const pwHash = await saltAndHashPassword(credentials.password as string);
 
-            user = await getUser({ email: credentials.email as string, passHash: pwHash });
+            user = await getUser({ email: credentials.email as string, password: credentials.password as string, passHash: pwHash });
 
             if (!user) {
                 throw new Error("No user found");

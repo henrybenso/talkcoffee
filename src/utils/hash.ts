@@ -1,9 +1,11 @@
+import * as argon2 from "argon2";
+
 export default async function saltAndHashPassword(str: string): Promise<string> {
-    const {
-        createHash,
-    } = await import('node:crypto');
-    const hash = createHash("sha256")
-    hash.update(str)
-    // console.log(hash.digest('hex'));
-    return hash.digest('hex');
+    try {
+        const hash = await argon2.hash(str);
+        return hash;
+    } catch (error) {
+        console.error("Error hashing password: ", error);
+        return "";
+    }
 }
