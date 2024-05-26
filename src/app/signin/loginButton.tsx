@@ -1,9 +1,5 @@
-import { prisma } from "../../../db";
-import { Button } from "@/components/ui/button";
 import { auth } from "@/auth";
-
 import { SignIn, SignOut } from "@/components/ui/auth-components";
-import Link from "next/link";
 
 export default async function LoginButton() {
   const session = await auth();

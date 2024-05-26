@@ -1,25 +1,12 @@
 import { signIn, signOut } from "@/auth";
 import { Button, buttonVariants } from "@/components/ui/button";
+import Link from "next/link";
 
-export function SignIn({
-  provider,
-  ...props
-}: { provider?: string } & React.ComponentPropsWithRef<typeof Button>) {
+export function SignIn() {
   return (
-    <form
-      action={async () => {
-        "use server";
-        await signIn("google");
-      }}
-    >
-      <Button
-        variant="ghost"
-        className={buttonVariants({ variant: "outline" })}
-        {...props}
-      >
-        Sign In
-      </Button>
-    </form>
+    <Link href="/signin" className={buttonVariants({ variant: "outline" })}>
+      Sign in
+    </Link>
   );
 }
 

@@ -1,5 +1,5 @@
 
-import { prisma } from "../../../../db";
+import { prisma } from "../../../db";
 import { NextResponse } from "next/server";
 import { type NextRequest } from "next/server";
 

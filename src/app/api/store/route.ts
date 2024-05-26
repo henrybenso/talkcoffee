@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import fs from 'fs'
 import { v2 as cloudinary } from 'cloudinary'
-import { prisma } from "../../../../db"
+import { prisma } from "../../../db"
 import { schemaStoreBackend } from "@/app/validation"
 
 import moment from "../../../utils/moment-timezone"

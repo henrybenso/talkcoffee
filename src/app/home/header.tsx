@@ -8,7 +8,7 @@ export default function Header() {
     // <div className="flex items-center justify-between w-full h-16 max-w-3xl px-4 mx-auto sm:px-6">
     //   </div>
     //   </div>
-    <header className="">
+    <header>
       <div className="justify-between sticky flex space-x-4">
         <div className="flex items-center h-16 max-w-3xl px-4 sm:px-6">
           <Link
