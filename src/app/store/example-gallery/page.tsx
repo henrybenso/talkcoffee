@@ -1,8 +1,6 @@
-import Layout from "../components/Layout";
-
 const Gallery = (props) => {
   return (
-    <Layout>
+    <>
       <div className="page">
         <h1>Image Gallery</h1>
         <main>
@@ -28,7 +26,7 @@ const Gallery = (props) => {
           margin-top: 2rem;
         }
       `}</style>
-    </Layout>
+    </>
   );
 };
 
