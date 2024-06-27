@@ -1,28 +1,29 @@
-'use client';
+"use client";
 
-import { useImmer } from 'use-immer';
-import { schemaStore } from '@/app/validation';
-import * as form from '@/components/ui/form';
-import Button from '@/components/ui/button';
-import Errors from '@/components/ui/errors';
+import { useImmer } from "use-immer";
+import { schemaStore } from "@/app/validation";
+import * as form from "@/components/ui/form";
+import Button from "@/components/ui/button";
+import Errors from "@/components/ui/errors";
+import Label from "@/components/ui/label";
 
 interface Days {
-  sunday: 'SUN';
-  monday: 'MON';
-  tuesday: 'TUE';
-  wednesday: 'WED';
-  thursday: 'TR';
-  friday: 'FRI';
-  saturday: 'SAT';
+  sunday: "SUN";
+  monday: "MON";
+  tuesday: "TUE";
+  wednesday: "WED";
+  thursday: "TR";
+  friday: "FRI";
+  saturday: "SAT";
 }
 export const Days = {
-  sunday: 'SUN',
-  monday: 'MON',
-  tuesday: 'TUE',
-  wednesday: 'WED',
-  thursday: 'TR',
-  friday: 'FRI',
-  saturday: 'SAT',
+  sunday: "SUN",
+  monday: "MON",
+  tuesday: "TUE",
+  wednesday: "WED",
+  thursday: "TR",
+  friday: "FRI",
+  saturday: "SAT",
 };
 
 // enum DineTypes {
@@ -32,12 +33,12 @@ export const Days = {
 
 export default function Form() {
   const [store, storeUpdate] = useImmer({
-    name: '',
-    rating: '5',
-    phoneNumber: '',
-    instagramHandle: '',
-    avatar: '',
-    images: '',
+    name: "",
+    rating: "5",
+    phoneNumber: "",
+    instagramHandle: "",
+    avatar: "",
+    images: "",
     serviceTypes: {
       dine: {
         table: false,
@@ -45,36 +46,36 @@ export default function Form() {
       },
       takeout: false,
       delivery: false,
-      curbsidepickup: false,
+      curbsidePickup: false,
     },
-    serviceHours: {
-      sunday: {
-        open: '',
-        close: '',
+    hours: {
+      SUN: {
+        open: "",
+        close: "",
       },
-      monday: {
-        open: '',
-        close: '',
+      MON: {
+        open: "",
+        close: "",
       },
-      tuesday: {
-        open: '',
-        close: '',
+      TUE: {
+        open: "",
+        close: "",
       },
-      wednesday: {
-        open: '',
-        close: '',
+      WED: {
+        open: "",
+        close: "",
       },
-      thursday: {
-        open: '',
-        close: '',
+      TR: {
+        open: "",
+        close: "",
       },
-      friday: {
-        open: '',
-        close: '',
+      FRI: {
+        open: "",
+        close: "",
       },
-      saturday: {
-        open: '',
-        close: '',
+      SAT: {
+        open: "",
+        close: "",
       },
     },
   });
@@ -82,319 +83,318 @@ export default function Form() {
   const result = schemaStore.safeParse(store);
   const errors = result.success ? {} : result.error.format();
 
-  async function onSubmit(e) {}
+  const handleGetValues = (e) => {
+    e.preventDefault();
+    console.log("Get Values", store);
+  };
+
+  async function onSubmit(e) {
+    e.preventDefault();
+
+    const formValid = schemaStore.safeParse(store);
+    if (!formValid.success) {
+      console.log(formValid.error.format());
+      return;
+    }
+    console.log("Form is valid", store);
+  }
+
+  function handleFieldChange(e: React.ChangeEvent<HTMLInputElement>) {
+    storeUpdate((draft) => {
+      draft[e.target.name as keyof typeof store] = e.target.value;
+    });
+  }
+
+  function handleFilesChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (!e.target.files) return;
+
+    storeUpdate((draft) => {
+      draft[e.target.name] = e.target.files;
+    });
+  }
+
+  // function handleDineChange(e: React.ChangeEvent<HTMLInputElement>) {
+  //   const { name, checked } = e.target;
+  //   storeUpdate((draft) => {
+  //     draft.serviceTypes.dine[name as keyof typeof store.serviceTypes.dine] =
+  //       checked;
+  //   });
+  // }
 
   function handleDineChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, checked } = e.target;
     storeUpdate((draft) => {
-      draft.sitIn[name as keyof typeof store.sitIn] = checked;
+      draft.serviceTypes.dine[name as keyof typeof store.serviceTypes.dine] =
+        checked;
+    });
+  }
+
+  function handleServiceTypesChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, checked } = e.target;
+    storeUpdate((draft) => {
+      draft.serviceTypes[name as keyof typeof store.serviceTypes] = checked;
+    });
+  }
+
+  function handleOpenHoursChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+    storeUpdate((draft) => {
+      draft.hours[name as keyof typeof store.hours].open = value;
+    });
+  }
+
+  function handleCloseHoursChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+    storeUpdate((draft) => {
+      draft.hours[name as keyof typeof store.hours].close = value;
     });
   }
 
   return (
-    <div className="p-8">
-      <section>
-        <h1 className="p-5 shrink-0 place-content-center text-5xl font-bold text-black">
-          add your store ☕
-        </h1>
-      </section>
-      <form onSubmit={onSubmit} className="min-w-80 space-y-8 p-8">
-        <div>
-          <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-            What kind of store is it?
-          </label>
-          <form.DineFormField
-            name={'table'}
-            value={store.serviceTypes.dine.table}
-            onChange={handleDineChange}
-            label={'table'}
-            labelValue={'Sit-at-table'}
+    <form onSubmit={onSubmit} className="space-y-8 p-8">
+      <div className="flex flex-wrap gap-4">
+        <div className="grow space-y-2">
+          <Label>Store Name</Label>
+          <form.InputField
+            name={"name"}
+            value={store.name}
+            placeholder=" Blue Bottle Coffee"
+            onChange={handleFieldChange}
+          ></form.InputField>
+          <Errors errors={errors?.name?._errors} />
+        </div>
+        <div className="space-y-2">
+          <Label>Rating ⭐</Label>
+          <form.RatingField value={store.rating} onChange={handleFieldChange}>
+            <Errors errors={errors?.rating?._errors} />
+          </form.RatingField>
+        </div>
+        <div className="grow space-y-2">
+          <Label>Instagram Handle</Label>
+          <form.InputField
+            name={"instagramHandle"}
+            value={store.instagramHandle}
+            placeholder="@"
+            onChange={handleFieldChange}
+            subtext={`It's not required, but we recommend to provide it!`}
           >
-            <Errors errors={errors?.serviceTypes?.dine?.table?._errors} />
-          </form.DineFormField>
-          <form.DineFormField
-            name={'bar'}
-            value={store.serviceTypes.dine.bar}
-            onChange={handleDineChange}
-            label={'bar'}
-            labelValue={'Bar'}
-          >
-            <Errors errors={errors?.serviceTypes?.dine?.bar?._errors} />
-          </form.DineFormField>
+            <Errors errors={errors?.instagramHandle?._errors} />
+          </form.InputField>
         </div>
-        <div>
-          <Label>Are these options available?</Label>
-          <input
-            type="checkbox"
-            id="takeOut"
-            {...register('serviceTypes.takeOut')}
-          />
-          <label htmlFor="takeOut">Take Out</label>
-          <input
-            type="checkbox"
-            id="delivery"
-            {...register('serviceTypes.delivery')}
-          />
-          <label htmlFor="delivery">Delivery</label>
-          <input
-            type="checkbox"
-            id="curbsidePickup"
-            {...register('serviceTypes.curbsidePickup')}
-          />
-          <label htmlFor="curbsidePickup">Curside Pickup</label>
-        </div>
+      </div>
 
-        <div className="flex flex-wrap gap-4 place-content-evenly px-8 pt-8">
-          <div className="space-y-2">
-            <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-              Sunday
-            </label>
-            <div>
-              <label className="pr-4 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Open
-              </label>
-              <input
-                className="h-10 rounded-md border-2 border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none hover:border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-700 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                type="time"
-                {...register('serviceHours.sunday.open')}
-              />
-            </div>
-            <div>
-              <label className="pr-4 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Close
-              </label>
-              <input
-                className="h-10 rounded-md border-2 border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none hover:border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-700 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                type="time"
-                {...register('serviceHours.sunday.close')}
-              />
-            </div>
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-              Monday
-            </label>
-            <div>
-              <label className="pr-4 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Open
-              </label>
-              <input
-                className="h-10 rounded-md border-2 border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none hover:border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-700 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                type="time"
-                {...register('serviceHours.monday.open')}
-              />
-            </div>
-            <div>
-              <label className="pr-4 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Close
-              </label>
-              <input
-                className="h-10 rounded-md border-2 border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none hover:border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-700 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                type="time"
-                {...register('serviceHours.monday.close')}
-              />
-            </div>
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-              Tuesday
-            </label>
-            <div>
-              <label className="pr-4 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Open
-              </label>
-              <input
-                className="h-10 rounded-md border-2 border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none hover:border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-700 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                type="time"
-                {...register('serviceHours.tuesday.open')}
-              />
-            </div>
-            <div>
-              <label className="pr-4 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Close
-              </label>
-              <input
-                className="h-10 rounded-md border-2 border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none hover:border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-700 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                type="time"
-                {...register('serviceHours.tuesday.close')}
-              />
-            </div>
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-              Wednesday
-            </label>
-            <div>
-              <label className="pr-4 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Open
-              </label>
-              <input
-                className="h-10 rounded-md border-2 border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none hover:border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-700 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                type="time"
-                {...register('serviceHours.wednesday.open')}
-              />
-            </div>
-            <div>
-              <label className="pr-4 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Close
-              </label>
-              <input
-                className="h-10 rounded-md border-2 border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none hover:border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-700 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                type="time"
-                {...register('serviceHours.wednesday.close')}
-              />
-            </div>
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-              Thursday
-            </label>
-            <div>
-              <label className="pr-4 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Open
-              </label>
-              <input
-                className="h-10 rounded-md border-2 border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none hover:border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-700 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                type="time"
-                {...register('serviceHours.thursday.open')}
-              />
-            </div>
-            <div>
-              <label className="pr-4 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Close
-              </label>
-              <input
-                className="h-10 rounded-md border-2 border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none hover:border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-700 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                type="time"
-                {...register('serviceHours.thursday.close')}
-              />
-            </div>
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-              Friday
-            </label>
-            <div>
-              <label className="pr-4 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Open
-              </label>
-              <input
-                className="h-10 rounded-md border-2 border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none hover:border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-700 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                type="time"
-                {...register('serviceHours.friday.open')}
-              />
-            </div>
-            <div>
-              <label className="pr-4 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Close
-              </label>
-              <input
-                className="h-10 rounded-md border-2 border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none hover:border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-700 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                type="time"
-                {...register('serviceHours.friday.close')}
-              />
-            </div>
-          </div>
-          <div className="space-y-2">
-            <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-              Saturday
-            </label>
-            <div>
-              <label className="pr-4 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Open
-              </label>
-              <input
-                className="h-10 rounded-md border-2 border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none hover:border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-700 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                type="time"
-                {...register('serviceHours.saturday.open')}
-              />
-            </div>
-            <div>
-              <label className="pr-4 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Close
-              </label>
-              <input
-                className="h-10 rounded-md border-2 border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none hover:border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-700 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                type="time"
-                {...register('serviceHours.saturday.close')}
-              />
-            </div>
-          </div>
-        </div>
-        <div>
-          <p className="flex place-content-center text-sm text-muted-foreground">
-            Leave the fields blank if the store is closed on that day
-          </p>
-        </div>
-
-        <div className="p-5 shrink-0 flex place-content-center">
-          <Button type="submit">Submit</Button>
-          {/* <button type="button" onClick={handleGetValues}>
-            Get values
-          </button> */}
-        </div>
-      </form>
-    </div>
-  );
-}
-
-function A() {
-  return (
-    <>
       <div>
-        <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-          What kind of store is it?
-        </label>
-        <div>
-          <div>
-            <input
-              type="checkbox"
-              id="sitAtTable"
-              {...register('serviceTypes.sitIn.sitAtTable')}
+        <Label>What kind of store is it?</Label>
+        <form.DineField
+          name="table"
+          value={store.serviceTypes.dine.table}
+          onChange={handleDineChange}
+          label="table"
+          labelValue="sit-at-table"
+        >
+          <Errors errors={errors?.serviceTypes?.dine?.table?._errors} />
+        </form.DineField>
+        <form.DineField
+          name="bar"
+          value={store.serviceTypes.dine.bar}
+          onChange={handleDineChange}
+          label="bar"
+          labelValue="bar"
+        >
+          <Errors errors={errors?.serviceTypes?.dine?.bar?._errors} />
+        </form.DineField>
+      </div>
+      <div>
+        <Label>Are these options available?</Label>
+        <form.DineField
+          name="takeout"
+          onChange={handleServiceTypesChange}
+          value={store.serviceTypes.takeout}
+          label="takeOut"
+          labelValue="take out"
+        >
+          <Errors errors={errors?.serviceTypes?.takeout?._errors} />
+        </form.DineField>
+        <form.DineField
+          name="delivery"
+          onChange={handleServiceTypesChange}
+          value={store.serviceTypes.delivery}
+          label="delivery"
+          labelValue="delivery"
+        >
+          <Errors errors={errors?.serviceTypes?.delivery?._errors} />
+        </form.DineField>
+        <form.DineField
+          name="curbsidePickup"
+          onChange={handleServiceTypesChange}
+          value={store.serviceTypes.curbsidePickup}
+          label="curbsidePickup"
+          labelValue="curbside pickup"
+        >
+          <Errors errors={errors?.serviceTypes?.curbsidePickup?._errors} />
+        </form.DineField>
+      </div>
+
+      <div className="grid grid-cols-7 gap-4">
+        <div className="space-y-2">
+          <Label>Sunday</Label>
+          <form.TimeField
+            label="Open"
+            name="SUN"
+            onChange={handleOpenHoursChange}
+          >
+            <Errors errors={errors?.hours?.SUN?.open?._errors} />
+          </form.TimeField>
+          <form.TimeField
+            label="Close"
+            name="SUN"
+            onChange={handleCloseHoursChange}
+          >
+            <Errors
+              errors={
+                errors?.hours?.SUN?.close?._errors || errors.hours?.SUN?._errors
+              }
             />
-            <label htmlFor="sitAtTable">Sit-at-table</label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              id="bar"
-              {...register('serviceTypes.sitIn.bar')}
+          </form.TimeField>
+        </div>
+        <div className="space-y-2">
+          <Label>Monday</Label>
+          <form.TimeField
+            label="Open"
+            name="MON"
+            onChange={handleOpenHoursChange}
+          >
+            <Errors errors={errors?.hours?.MON?.open?._errors} />
+          </form.TimeField>
+          <form.TimeField
+            label="Close"
+            name="MON"
+            onChange={handleCloseHoursChange}
+          >
+            <Errors
+              errors={
+                errors?.hours?.MON?.close?._errors || errors.hours?.MON?._errors
+              }
             />
-            <label htmlFor="Bar">Bar</label>
-          </div>
+          </form.TimeField>
+        </div>
+        <div className="space-y-2">
+          <Label>Tuesday</Label>
+          <form.TimeField
+            label={"Open"}
+            name={`TUE`}
+            onChange={handleOpenHoursChange}
+          >
+            <Errors errors={errors?.hours?.TUE?.open?._errors} />
+          </form.TimeField>
+          <form.TimeField
+            label={"Close"}
+            name={`TUE`}
+            onChange={handleCloseHoursChange}
+          >
+            <Errors
+              errors={
+                errors?.hours?.TUE?.close?._errors || errors.hours?.TUE?._errors
+              }
+            />
+          </form.TimeField>
+        </div>
+        <div className="space-y-2">
+          <Label>Wednesday</Label>
+          <form.TimeField
+            label={"Open"}
+            name={`WED`}
+            onChange={handleOpenHoursChange}
+          >
+            <Errors errors={errors?.hours?.WED?.open?._errors} />
+          </form.TimeField>
+          <form.TimeField
+            label={"Close"}
+            name={`WED`}
+            onChange={handleCloseHoursChange}
+          >
+            <Errors
+              errors={
+                errors?.hours?.WED?.close?._errors || errors.hours?.WED?._errors
+              }
+            />
+          </form.TimeField>
+        </div>
+        <div className="space-y-2">
+          <Label>Thursday</Label>
+          <form.TimeField
+            label={"Open"}
+            name={"TR"}
+            onChange={handleOpenHoursChange}
+          >
+            <Errors errors={errors?.hours?.TR?.open?._errors} />
+          </form.TimeField>
+          <form.TimeField
+            label={"Close"}
+            name={`TR`}
+            onChange={handleCloseHoursChange}
+          >
+            <Errors
+              errors={
+                errors?.hours?.TR?.close?._errors || errors?.hours?.TR?._errors
+              }
+            />
+          </form.TimeField>
+        </div>
+        <div className="space-y-2">
+          <Label>Friday</Label>
+          <form.TimeField
+            label={"Open"}
+            name={`FRI`}
+            onChange={handleOpenHoursChange}
+          >
+            <Errors errors={errors?.hours?.FRI?.open?._errors} />
+          </form.TimeField>
+          <form.TimeField
+            label={"Close"}
+            name={`FRI`}
+            onChange={handleCloseHoursChange}
+          >
+            <Errors
+              errors={
+                errors?.hours?.FRI?.close?._errors ||
+                errors?.hours?.FRI?._errors
+              }
+            />
+          </form.TimeField>
+        </div>
+        <div className="space-y-2">
+          <Label>Saturday</Label>
+          <form.TimeField
+            label="Open"
+            name="SAT"
+            onChange={handleOpenHoursChange}
+          >
+            <Errors errors={errors?.hours?.SAT?.open?._errors} />
+          </form.TimeField>
+          <form.TimeField
+            label="Close"
+            name="SAT"
+            onChange={handleCloseHoursChange}
+          >
+            <Errors
+              errors={
+                errors?.hours?.SAT?.close?._errors ||
+                errors?.hours?.SAT?._errors
+              }
+            />
+          </form.TimeField>
         </div>
       </div>
       <div>
-        <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-          Are these options available?
-        </label>
-        <div>
-          <div>
-            <input
-              type="checkbox"
-              id="takeOut"
-              {...register('serviceTypes.takeOut')}
-            />
-            <label htmlFor="takeOut">Take Out</label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              id="delivery"
-              {...register('serviceTypes.delivery')}
-            />
-            <label htmlFor="delivery">Delivery</label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              id="curbsidePickup"
-              {...register('serviceTypes.curbsidePickup')}
-            />
-            <label htmlFor="curbsidePickup">Curside Pickup</label>
-          </div>
-        </div>
+        <p className="flex place-content-center text-sm text-muted-foreground">
+          Leave the fields blank if the store is closed on that day
+        </p>
       </div>
-    </>
+
+      <div className="p-5 shrink-0 flex place-content-center">
+        <Button type="submit">Submit</Button>
+      </div>
+    </form>
   );
 }

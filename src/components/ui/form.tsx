@@ -2,16 +2,13 @@ export function InputField({
   children,
   name,
   value,
-  label,
   placeholder,
   onChange,
   subtext,
-  errors,
 }: {
   children?: React.ReactNode;
   name: string;
   value: string;
-  label: string;
   placeholder: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   subtext?: string;
@@ -19,28 +16,22 @@ export function InputField({
 }) {
   return (
     <>
-      <div className="grow space-y-2">
-        <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-          {label}
-        </label>
-        <input
-          name={name}
-          className="flex h-10 w-full rounded-md border-2 border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none hover:border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-700 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-          type="text"
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
-        />
-        {subtext && <p className="text-sm text-muted-foreground">{subtext}</p>}
-        {children}
-      </div>
+      <input
+        name={name}
+        className="flex h-10 w-full rounded-md border-2 border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none hover:border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-700 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+        type="text"
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+      />
+      {subtext && <p className="text-sm text-muted-foreground">{subtext}</p>}
+      {children}
     </>
   );
 }
 
-export function FileFormField({
+export function FileField({
   children,
-  label,
   id,
   name,
   multiple,
@@ -48,7 +39,6 @@ export function FileFormField({
   subtext,
 }: {
   children?: React.ReactNode;
-  label: string;
   id: string;
   name: string;
   multiple?: boolean;
@@ -56,17 +46,14 @@ export function FileFormField({
   subtext: string;
 }) {
   return (
-    <div className="inset-y-0 right-0 space-y-2">
-      <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-        {label}
-      </label>
+    <>
       <input
         className="block w-full text-sm text-slate-500
-file:mr-4 file:py-2 file:px-4
-file:rounded-full file:border-0
-file:text-sm file:font-semibold
-file:bg-violet-50 file:bg-transparent
-hover:file:bg-violet-100"
+        file:mr-4 file:py-2 file:px-4
+        file:rounded-full file:border-0
+        file:text-sm file:font-semibold
+        file:bg-violet-50 file:bg-transparent
+        hover:file:bg-violet-100"
         id={id}
         type="file"
         multiple={multiple}
@@ -77,26 +64,21 @@ hover:file:bg-violet-100"
       />
       {subtext && <p className="text-sm text-muted-foreground">{subtext}</p>}
       {children}
-    </div>
+    </>
   );
 }
 
 export function RatingField({
   children,
   value,
-  label,
   onChange,
 }: {
   children?: React.ReactNode;
   value: string;
-  label: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
   return (
-    <div className="space-y-2">
-      <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-        {label}
-      </label>
+    <>
       <select
         className="flex h-10 w-full rounded-md border-2 border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none hover:border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-700 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
         name="rating"
@@ -110,11 +92,11 @@ export function RatingField({
         <option value="1">1</option>
       </select>
       {children}
-    </div>
+    </>
   );
 }
 
-export function DineFormField({
+export function DineField({
   children,
   name,
   value,
@@ -141,6 +123,64 @@ export function DineFormField({
       />
       <label htmlFor={label}>{labelValue}</label>
       {children}
+    </>
+  );
+}
+
+export function TimeField({
+  label,
+  name,
+  onChange,
+  children,
+}: {
+  label: string;
+  name: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <>
+      <div>
+        <label className="pr-4 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+          {label}
+        </label>
+        <input
+          className="h-10 rounded-md border-2 border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none hover:border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-700 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          type="time"
+          name={name}
+          onChange={onChange}
+        />
+        {children}
+      </div>
+    </>
+  );
+}
+
+export function TimeFieldTest({
+  label,
+  name,
+  onChange,
+  children,
+}: {
+  label: string;
+  name: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  children?: React.ReactNode;
+}) {
+  return (
+    <>
+      <div>
+        <label className="pr-4 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+          {label}
+        </label>
+        <input
+          className="h-10 rounded-md border-2 border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none hover:border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-700 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          type="time"
+          name={name}
+          onChange={onChange}
+        />
+        {children}
+      </div>
     </>
   );
 }

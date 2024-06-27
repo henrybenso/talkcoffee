@@ -1,41 +1,42 @@
-'use client';
+"use client";
 
-import { useImmer } from 'use-immer';
-import { schemaStoreUser } from '@/app/validation';
-import * as form from '@/components/ui/form';
+import { useImmer } from "use-immer";
+import { schemaStoreUser } from "@/app/validation";
+import * as form from "@/components/ui/form";
 
-import Button from '@/components/ui/button';
-import Errors from '@/components/ui/errors';
+import Button from "@/components/ui/button";
+import Errors from "@/components/ui/errors";
+import Label from "@/components/ui/label";
 
 interface Days {
-  sunday: 'SUN';
-  monday: 'MON';
-  tuesday: 'TUE';
-  wednesday: 'WED';
-  thursday: 'TR';
-  friday: 'FRI';
-  saturday: 'SAT';
+  sunday: "SUN";
+  monday: "MON";
+  tuesday: "TUE";
+  wednesday: "WED";
+  thursday: "TR";
+  friday: "FRI";
+  saturday: "SAT";
 }
 export const Days = {
-  sunday: 'SUN',
-  monday: 'MON',
-  tuesday: 'TUE',
-  wednesday: 'WED',
-  thursday: 'TR',
-  friday: 'FRI',
-  saturday: 'SAT',
+  sunday: "SUN",
+  monday: "MON",
+  tuesday: "TUE",
+  wednesday: "WED",
+  thursday: "TR",
+  friday: "FRI",
+  saturday: "SAT",
 };
 
 enum DineTypes {
-  CAFE = 'CAFE',
-  BAR = 'BAR',
+  CAFE = "CAFE",
+  BAR = "BAR",
 }
 
 export default function Form() {
   const [store, storeUpdate] = useImmer({
-    name: '',
-    rating: '5',
-    instagramHandle: '',
+    name: "",
+    rating: "5",
+    instagramHandle: "",
     dine: {
       table: false,
       bar: false,
@@ -49,7 +50,7 @@ export default function Form() {
 
   const handleGetValues = (e) => {
     e.preventDefault();
-    console.log('Get Values', store);
+    console.log("Get Values", store);
   };
   // --------------------------------------------------------------------------------------------
 
@@ -61,6 +62,8 @@ export default function Form() {
       console.log(formValid.error.format());
       return;
     }
+
+    console.log("submitting form", store);
 
     // const { name, rating, instagramHandle, avatar, images } = values;
 
@@ -74,12 +77,12 @@ export default function Form() {
     // formData.append('imageFive', images[4]);
     // formData.append('store', JSON.stringify(values));
 
-    const res = await fetch('http://localhost:3000/api/store', {
-      method: 'POST',
-      body: JSON.stringify(store),
-    });
-    const result = await res.json();
-    console.log(result);
+    // const res = await fetch("http://localhost:3000/api/store", {
+    //   method: "POST",
+    //   body: JSON.stringify(store),
+    // });
+    // const result = await res.json();
+    // console.log(result);
   }
 
   function handleFieldChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -96,7 +99,7 @@ export default function Form() {
     });
   }
 
-  function handleSitInChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleDineChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, checked } = e.target;
     storeUpdate((draft) => {
       draft.dine[name as keyof typeof store.dine] = checked;
@@ -105,83 +108,88 @@ export default function Form() {
 
   return (
     <>
-      <form onSubmit={submitForm} className="space-y-8 p-8">
+      <form onSubmit={handleGetValues} className="space-y-8 py-8">
         <div className="flex flex-wrap gap-4 place-content-evenly">
-          <form.InputField
-            name={'name'}
-            value={store.name}
-            label={'Store Name'}
-            placeholder=" Blue Bottle Coffee"
-            onChange={handleFieldChange}
-          >
-            <Errors errors={errors?.name?._errors} />
-          </form.InputField>
-          <form.RatingField
-            value={store.rating}
-            label={'Rating ⭐'}
-            onChange={handleFieldChange}
-          >
-            <Errors errors={errors?.rating?._errors} />
-          </form.RatingField>
-          <form.InputField
-            name={'instagramHandle'}
-            value={store.instagramHandle}
-            label={'Instagram Handle'}
-            placeholder="@"
-            onChange={handleFieldChange}
-            subtext={`It's not required, but we recommend to provide it!`}
-          >
-            <Errors errors={errors?.instagramHandle?._errors} />
-          </form.InputField>
+          <div className="grow space-y-2">
+            <Label>Store Name</Label>
+            <form.InputField
+              name="name"
+              value={store.name}
+              placeholder=" Blue Bottle Coffee"
+              onChange={handleFieldChange}
+            >
+              <Errors errors={errors?.name?._errors} />
+            </form.InputField>
+          </div>
+          <div className="space-y-2">
+            <Label>Rating ⭐</Label>
+            <form.RatingField value={store.rating} onChange={handleFieldChange}>
+              <Errors errors={errors?.rating?._errors} />
+            </form.RatingField>
+          </div>
+          <div className="grow space-y-2">
+            <Label>Instagram Handle</Label>
+            <form.InputField
+              name="instagramHandle"
+              value={store.instagramHandle}
+              placeholder="@"
+              onChange={handleFieldChange}
+              subtext={`It's not required, but we recommend to provide it!`}
+            >
+              <Errors errors={errors?.instagramHandle?._errors} />
+            </form.InputField>
+          </div>
         </div>
 
         <div>
-          <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-            What kind of store is it?
-          </label>
+          <Label>What kind of store is it?</Label>
           <div>
-            <form.DineFormField
-              name={'table'}
+            <form.DineField
+              name="table"
               value={store.dine.table}
-              onChange={handleSitInChange}
-              label={'table'}
-              labelValue={'sit-at-table'}
+              onChange={handleDineChange}
+              label="table"
+              labelValue="sit-at-table"
             >
               <Errors errors={errors?.dine?.table?._errors} />
-            </form.DineFormField>
-            <form.DineFormField
-              name={'bar'}
+            </form.DineField>
+            <form.DineField
+              name="bar"
               value={store.dine.bar}
-              onChange={handleSitInChange}
-              label={'bar'}
-              labelValue={'bar'}
+              onChange={handleDineChange}
+              label="bar"
+              labelValue="bar"
             >
               <Errors errors={errors?.dine?.bar?._errors} />
-            </form.DineFormField>
+            </form.DineField>
           </div>
         </div>
 
         <div className="flex flex-wrap gap-4 place-content-evenly p-8">
-          <form.FileFormField
-            label="Avatar"
-            id="avatar"
-            name="avatar"
-            onChange={handleFilesChange}
-            subtext="e.g. store logo, company logo, store front"
-          >
-            <Errors errors={errors?.avatar?._errors} />
-          </form.FileFormField>
+          <div className="inset-y-0 right-0 space-y-2">
+            <Label>Avatar</Label>
+            <form.FileField
+              id="avatar"
+              name="avatar"
+              onChange={handleFilesChange}
+              subtext="e.g. store logo, company logo, store front"
+            >
+              <Errors errors={errors?.avatar?._errors} />
+            </form.FileField>
+          </div>
 
-          <form.FileFormField
-            label="Images"
-            id="images"
-            name="images"
-            multiple
-            onChange={handleFilesChange}
-            subtext="e.g. photos of the store, interior, exterior, menu, etc."
-          >
-            <Errors errors={errors?.images?._errors} />
-          </form.FileFormField>
+          <div className="inset-y-0 right-0 space-y-2">
+            <Label>Images</Label>
+            <form.FileField
+              id="images"
+              name="images"
+              multiple
+              onChange={handleFilesChange}
+              subtext="e.g. photos of the store, interior, exterior, menu, etc."
+            >
+              <Errors errors={errors?.images?._errors} />
+            </form.FileField>
+          </div>
         </div>
 
         <div className="p-5 shrink-0 flex place-content-center">

@@ -32,8 +32,8 @@ export const schemaStoreUser = z.object({
         return parsed;
     }),
     instagramHandle: z.string().optional(),
-    sitIn: z.object({
-        sitAtTable: z.boolean(),
+    dine: z.object({
+        table: z.boolean(),
         bar: z.boolean(),
     }),
     avatar: z.any().refine((files) => files?.length == 1, "An image is required.")
@@ -43,6 +43,19 @@ export const schemaStoreUser = z.object({
         .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
 
 });
+
+const hoursSchema = z.object({
+    open: z.string().regex(TIME_REGEX),
+    close: z.string().regex(TIME_REGEX),
+}).refine((data) => data.open !== data.close, {
+    message: "Times cannot be the same value!",
+});
+const emptyHours = z.object({
+    open: z.string().length(0),
+    close: z.string().length(0),
+});
+
+const hoursBothOrNeither = hoursSchema.or(emptyHours);
 
 export const schemaStore = z.object({
     name: z.string().min(1, { message: "Required" }),
@@ -54,19 +67,16 @@ export const schemaStore = z.object({
     images: z.any().refine((files) => files?.length == 5, "5 images required.")
         .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`),
     serviceTypes: z.object({
-        sitIn: z.object({
-            sitAtTable: z.boolean(),
+        dine: z.object({
+            table: z.boolean(),
             bar: z.boolean(),
         }),
-        takeOut: z.boolean(),
+        takeout: z.boolean(),
         delivery: z.boolean(),
         curbsidePickup: z.boolean(),
     }),
-    serviceHours: z.object({
-        sunday: z.object({
-            open: z.union([z.string().length(0), z.string().regex(TIME_REGEX)]),
-            close: z.union([z.string().length(0), z.string().regex(TIME_REGEX)]),
-        }),
+    hours: z.object({
+        SUN: hoursBothOrNeither,
         // .refine(
         //   (data) =>
         //     data.open !== "" && data.close !== "" && data.open === data.close,
@@ -76,47 +86,11 @@ export const schemaStore = z.object({
         //     params: { open: "Times cannot be the same value!" },
         //   }
         // ),
-        monday: z.object({
-            open: z.union([z.string().length(0), z.string().regex(TIME_REGEX)]),
-            close: z.union([z.string().length(0), z.string().regex(TIME_REGEX)]),
-        }),
-        // .refine((data) => data.open !== "" && data.open === data.close, {
-        //   message: "Times cannot be the same value!",
-        // })
-        tuesday: z.object({
-            open: z.union([z.string().length(0), z.string().regex(TIME_REGEX)]),
-            close: z.union([z.string().length(0), z.string().regex(TIME_REGEX)]),
-        }),
-        // .refine((data) => data.open !== "" && data.open === data.close, {
-        //   message: "Times cannot be the same value!",
-        // })
-        wednesday: z.object({
-            open: z.union([z.string().length(0), z.string().regex(TIME_REGEX)]),
-            close: z.union([z.string().length(0), z.string().regex(TIME_REGEX)]),
-        }),
-        // .refine((data) => data.open !== "" && data.open === data.close, {
-        //   message: "Times cannot be the same value!",
-        // })
-        thursday: z.object({
-            open: z.union([z.string().length(0), z.string().regex(TIME_REGEX)]),
-            close: z.union([z.string().length(0), z.string().regex(TIME_REGEX)]),
-        }),
-        // .refine((data) => data.open !== "" && data.open === data.close, {
-        //   message: "Times cannot be the same value!",
-        // })
-        friday: z.object({
-            open: z.union([z.string().length(0), z.string().regex(TIME_REGEX)]),
-            close: z.union([z.string().length(0), z.string().regex(TIME_REGEX)]),
-        }),
-        // .refine((data) => data.open !== "" && data.open === data.close, {
-        //   message: "Times cannot be the same value!",
-        // })
-        saturday: z.object({
-            open: z.union([z.string().length(0), z.string().regex(TIME_REGEX)]),
-            close: z.union([z.string().length(0), z.string().regex(TIME_REGEX)]),
-        }),
-        // .refine((data) => data.open !== "" && data.open === data.close, {
-        //   message: "Times cannot be the same value!",
-        // })
+        MON: hoursBothOrNeither,
+        TUE: hoursBothOrNeither,
+        WED: hoursBothOrNeither,
+        TR: hoursBothOrNeither,
+        FRI: hoursBothOrNeither,
+        SAT: hoursBothOrNeither,
     }),
 });

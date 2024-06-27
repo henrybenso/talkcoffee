@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import Button from '@/components/ui/button';
-import Form from './form';
+import Link from "next/link";
+import Button from "@/components/ui/button";
+import Form from "./form";
 
 export default function Page() {
   return (
@@ -17,7 +17,7 @@ export default function Page() {
       </div>
       <div className="min-w-80 p-8">
         <section>
-          <h1 className="px-8 text-5xl font-bold text-black">add a store ☕</h1>
+          <h1 className="text-5xl font-bold text-black">add a store ☕</h1>
         </section>
         <Form />
       </div>
