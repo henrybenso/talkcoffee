@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-const PHONE_NUMBER_REGEX = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
+const PHONE_NUMBER_REGEX = (/(^\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$)|(^\(?\d{3}\)?\d{3}\d{4}$)/)
 const TIME_REGEX = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
 export const VALUES = ["CAFE", "BAR"] as const;
 const MAX_FILE_SIZE = 500000;
@@ -59,7 +59,8 @@ const hoursBothOrNeither = hoursSchema.or(emptyHours);
 
 export const schemaStore = z.object({
     name: z.string().min(1, { message: "Required" }),
-    rating: z.string(),
+    ownerName: z.string().min(1, { message: "Required" }),
+    email: z.string().email(),
     phoneNumber: z.string().regex(PHONE_NUMBER_REGEX, "Invalid phone number"),
     instagramHandle: z.string(),
     avatar: z.any().refine((files) => files?.length == 1, "An image is required.")
@@ -67,14 +68,28 @@ export const schemaStore = z.object({
     images: z.any().refine((files) => files?.length == 5, "5 images required.")
         .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`),
     serviceTypes: z.object({
-        dine: z.object({
-            table: z.boolean(),
-            bar: z.boolean(),
-        }),
+        table: z.boolean(),
+        bar: z.boolean(),
         takeout: z.boolean(),
         delivery: z.boolean(),
         curbsidePickup: z.boolean(),
-    }),
+    })
+        .superRefine((arg, ctx): arg is {
+            table: boolean;
+            bar: boolean;
+            takeout: boolean;
+            delivery: boolean;
+            curbsidePickup: boolean;
+        } => {
+            if (!arg.table && !arg.bar && !arg.takeout && !arg.delivery) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: "At least one service type must be selected",
+                });
+            }
+            return z.NEVER;
+
+        }),
     hours: z.object({
         SUN: hoursBothOrNeither,
         // .refine(

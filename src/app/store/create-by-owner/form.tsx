@@ -33,59 +33,59 @@ export const Days = {
 
 export default function Form() {
   const [store, storeUpdate] = useImmer({
-    name: "",
-    rating: "5",
-    phoneNumber: "",
-    instagramHandle: "",
-    avatar: "",
-    images: "",
+    name: '',
+    ownerName: '',
+    email: '',
+    phoneNumber: '',
+    instagramHandle: '',
+    avatar: '',
+    images: '',
     serviceTypes: {
-      dine: {
-        table: false,
-        bar: false,
-      },
+      table: false,
+      bar: false,
       takeout: false,
       delivery: false,
       curbsidePickup: false,
     },
     hours: {
       SUN: {
-        open: "",
-        close: "",
+        open: '',
+        close: '',
       },
       MON: {
-        open: "",
-        close: "",
+        open: '',
+        close: '',
       },
       TUE: {
-        open: "",
-        close: "",
+        open: '',
+        close: '',
       },
       WED: {
-        open: "",
-        close: "",
+        open: '',
+        close: '',
       },
       TR: {
-        open: "",
-        close: "",
+        open: '',
+        close: '',
       },
       FRI: {
-        open: "",
-        close: "",
+        open: '',
+        close: '',
       },
       SAT: {
-        open: "",
-        close: "",
+        open: '',
+        close: '',
       },
     },
   });
 
+  console.log('re-rendered');
   const result = schemaStore.safeParse(store);
   const errors = result.success ? {} : result.error.format();
 
   const handleGetValues = (e) => {
     e.preventDefault();
-    console.log("Get Values", store);
+    console.log('Get Values', store);
   };
 
   async function onSubmit(e) {
@@ -96,7 +96,7 @@ export default function Form() {
       console.log(formValid.error.format());
       return;
     }
-    console.log("Form is valid", store);
+    console.log('Form is valid', store);
   }
 
   function handleFieldChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -154,25 +154,50 @@ export default function Form() {
     <form onSubmit={onSubmit} className="space-y-8 p-8">
       <div className="flex flex-wrap gap-4">
         <div className="grow space-y-2">
+          <Label>Your Name</Label>
+          <form.InputField
+            name="ownerName"
+            value={store.ownerName}
+            onChange={handleFieldChange}
+            subtext={`Only authorized store personnel or store owners may submit a store.`}
+          >
+            <Errors errors={errors?.ownerName?._errors} />
+          </form.InputField>
+        </div>
+        <div className="grow space-y-2">
+          <Label>Email</Label>
+          <form.InputField
+            name="email"
+            value={store.email}
+            onChange={handleFieldChange}
+          ></form.InputField>
+          <Errors errors={errors?.email?._errors} />
+        </div>
+        <div className="grow space-y-2">
           <Label>Store Name</Label>
           <form.InputField
-            name={"name"}
+            name="name"
             value={store.name}
             placeholder=" Blue Bottle Coffee"
             onChange={handleFieldChange}
           ></form.InputField>
           <Errors errors={errors?.name?._errors} />
         </div>
-        <div className="space-y-2">
-          <Label>Rating ⭐</Label>
-          <form.RatingField value={store.rating} onChange={handleFieldChange}>
-            <Errors errors={errors?.rating?._errors} />
-          </form.RatingField>
+        <div className="grow space-y-2">
+          <Label>Phone Number</Label>
+          <form.InputField
+            name="phoneNumber"
+            value={store.phoneNumber}
+            placeholder="123-456-7890"
+            onChange={handleFieldChange}
+          >
+            <Errors errors={errors?.phoneNumber?._errors} />
+          </form.InputField>
         </div>
         <div className="grow space-y-2">
           <Label>Instagram Handle</Label>
           <form.InputField
-            name={"instagramHandle"}
+            name="instagramHandle"
             value={store.instagramHandle}
             placeholder="@"
             onChange={handleFieldChange}
@@ -187,22 +212,18 @@ export default function Form() {
         <Label>What kind of store is it?</Label>
         <form.DineField
           name="table"
-          value={store.serviceTypes.dine.table}
-          onChange={handleDineChange}
+          value={store.serviceTypes.table}
+          onChange={handleServiceTypesChange}
           label="table"
           labelValue="sit-at-table"
-        >
-          <Errors errors={errors?.serviceTypes?.dine?.table?._errors} />
-        </form.DineField>
+        ></form.DineField>
         <form.DineField
           name="bar"
-          value={store.serviceTypes.dine.bar}
-          onChange={handleDineChange}
+          value={store.serviceTypes.bar}
+          onChange={handleServiceTypesChange}
           label="bar"
           labelValue="bar"
-        >
-          <Errors errors={errors?.serviceTypes?.dine?.bar?._errors} />
-        </form.DineField>
+        ></form.DineField>
       </div>
       <div>
         <Label>Are these options available?</Label>
@@ -212,30 +233,25 @@ export default function Form() {
           value={store.serviceTypes.takeout}
           label="takeOut"
           labelValue="take out"
-        >
-          <Errors errors={errors?.serviceTypes?.takeout?._errors} />
-        </form.DineField>
+        ></form.DineField>
         <form.DineField
           name="delivery"
           onChange={handleServiceTypesChange}
           value={store.serviceTypes.delivery}
           label="delivery"
           labelValue="delivery"
-        >
-          <Errors errors={errors?.serviceTypes?.delivery?._errors} />
-        </form.DineField>
+        ></form.DineField>
         <form.DineField
           name="curbsidePickup"
           onChange={handleServiceTypesChange}
           value={store.serviceTypes.curbsidePickup}
           label="curbsidePickup"
           labelValue="curbside pickup"
-        >
-          <Errors errors={errors?.serviceTypes?.curbsidePickup?._errors} />
-        </form.DineField>
+        ></form.DineField>
+        <Errors errors={errors?.serviceTypes?._errors} />
       </div>
 
-      <div className="grid grid-cols-7 gap-4">
+      <div className="flex flex-wrap gap-4 place-content-evenly">
         <div className="space-y-2">
           <Label>Sunday</Label>
           <form.TimeField
@@ -281,14 +297,14 @@ export default function Form() {
         <div className="space-y-2">
           <Label>Tuesday</Label>
           <form.TimeField
-            label={"Open"}
+            label={'Open'}
             name={`TUE`}
             onChange={handleOpenHoursChange}
           >
             <Errors errors={errors?.hours?.TUE?.open?._errors} />
           </form.TimeField>
           <form.TimeField
-            label={"Close"}
+            label={'Close'}
             name={`TUE`}
             onChange={handleCloseHoursChange}
           >
@@ -302,14 +318,14 @@ export default function Form() {
         <div className="space-y-2">
           <Label>Wednesday</Label>
           <form.TimeField
-            label={"Open"}
+            label={'Open'}
             name={`WED`}
             onChange={handleOpenHoursChange}
           >
             <Errors errors={errors?.hours?.WED?.open?._errors} />
           </form.TimeField>
           <form.TimeField
-            label={"Close"}
+            label={'Close'}
             name={`WED`}
             onChange={handleCloseHoursChange}
           >
@@ -323,14 +339,14 @@ export default function Form() {
         <div className="space-y-2">
           <Label>Thursday</Label>
           <form.TimeField
-            label={"Open"}
-            name={"TR"}
+            label={'Open'}
+            name={'TR'}
             onChange={handleOpenHoursChange}
           >
             <Errors errors={errors?.hours?.TR?.open?._errors} />
           </form.TimeField>
           <form.TimeField
-            label={"Close"}
+            label={'Close'}
             name={`TR`}
             onChange={handleCloseHoursChange}
           >
@@ -344,14 +360,14 @@ export default function Form() {
         <div className="space-y-2">
           <Label>Friday</Label>
           <form.TimeField
-            label={"Open"}
+            label={'Open'}
             name={`FRI`}
             onChange={handleOpenHoursChange}
           >
             <Errors errors={errors?.hours?.FRI?.open?._errors} />
           </form.TimeField>
           <form.TimeField
-            label={"Close"}
+            label={'Close'}
             name={`FRI`}
             onChange={handleCloseHoursChange}
           >
@@ -390,6 +406,32 @@ export default function Form() {
         <p className="flex place-content-center text-sm text-muted-foreground">
           Leave the fields blank if the store is closed on that day
         </p>
+      </div>
+      <div className="flex flex-wrap gap-4 place-content-evenly p-8">
+        <div className="inset-y-0 right-0 space-y-2">
+          <Label>Avatar</Label>
+          <form.FileField
+            id="avatar"
+            name="avatar"
+            onChange={handleFilesChange}
+            subtext="e.g. store logo, company logo, store front"
+          >
+            <Errors errors={errors?.avatar?._errors} />
+          </form.FileField>
+        </div>
+
+        <div className="inset-y-0 right-0 space-y-2">
+          <Label>Images</Label>
+          <form.FileField
+            id="images"
+            name="images"
+            multiple
+            onChange={handleFilesChange}
+            subtext="e.g. photos of the store, interior, exterior, menu, etc."
+          >
+            <Errors errors={errors?.images?._errors} />
+          </form.FileField>
+        </div>
       </div>
 
       <div className="p-5 shrink-0 flex place-content-center">

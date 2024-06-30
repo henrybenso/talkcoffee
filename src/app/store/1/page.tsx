@@ -108,24 +108,25 @@ const instagramUrl = `https://www.instagram.com/${store.instagramHandle}`;
 
 function Header() {
   return (
-    <div className="pr-6 mx-auto overflow-hidden">
-      <div className="flex flex-row p-6">
-        <Suspense fallback={<p>Loading avatar image...</p>}>
-          <AvatarImage
-            params={{
-              avatarId: store.avatar.publicId,
-            }}
-          />
-        </Suspense>
-        <div className="font-bold font-sans text-7xl content-center">
+    <div className="flex items-center">
+      <Suspense fallback={<p>Loading avatar image...</p>}>
+        <AvatarImage
+          params={{
+            avatarId: store.avatar.publicId,
+          }}
+        />
+      </Suspense>
+      <div className="">
+        <div className="flex py-2 text-7xl font-bold font-sans">
           {store.name}
-          <div className="flex flex-row items-center font-semibold p-1 font-sans text-xl">
-            <Instagram />
-            <a className="pl-1" href={instagramUrl} target="_blank">
-              {store.instagramHandle}
-            </a>
-          </div>
         </div>
+        <div className="flex py-2 font-semibold font-sans text-xl">
+          {/* <Instagram /> */}
+          <a className="" href={instagramUrl} target="_blank">
+            {store.instagramHandle}
+          </a>
+        </div>
+        <div>Rating: {store.averageRating}</div>
       </div>
     </div>
   );
@@ -146,50 +147,53 @@ export default function Page() {
 
   return (
     <>
-      <Header />
+      <div className="p-6">
+        <Header />
 
-      <section className="font-semibold">
-        <div className="p-3">
-          <div>Rating: {store.averageRating}</div>
-          <div>Phone Number: {store.phoneNumber}</div>
-        </div>
-        <br />
-        <div className="p-3">
-          Seating Type:
-          {store.serviceTypes.sitIn.map((type, index) => (
-            <div key={index} className="pl-5">
-              {type}
-            </div>
-          ))}
-        </div>
-        <br />
-        <div className="p-3">
-          <div>Take out Options:</div>
-          <div className="pl-5">
-            <div>{store.serviceTypes.takeOut && <div>Order Pickup</div>}</div>
-            <div>{store.serviceTypes.delivery && <div>Delivery</div>}</div>
-            <div>
-              {store.serviceTypes.curbsidePickup && <div>Curbside Pickup</div>}
+        <section className="font-semibold">
+          <div className="p-3">
+            <div>Phone: {store.phoneNumber}</div>
+          </div>
+          <br />
+          <div className="p-3">
+            Seating Type:
+            {store.serviceTypes.sitIn.map((type, index) => (
+              <div key={index} className="pl-5">
+                {type}
+              </div>
+            ))}
+          </div>
+          <br />
+          <div className="p-3">
+            <div>Take out Options:</div>
+            <div className="pl-5">
+              <div>{store.serviceTypes.takeOut && <div>Order Pickup</div>}</div>
+              <div>{store.serviceTypes.delivery && <div>Delivery</div>}</div>
+              <div>
+                {store.serviceTypes.curbsidePickup && (
+                  <div>Curbside Pickup</div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section>
-        <div className="p-3">
-          <ol className="font-semibold">
-            Hours:
-            {storeHours}
-          </ol>
-        </div>
-      </section>
+        <section>
+          <div className="p-3">
+            <ol className="font-semibold">
+              Hours:
+              {storeHours}
+            </ol>
+          </div>
+        </section>
 
-      <div>
-        <div className="p-3 flex font-bold font-sans text-5xl">Gallery</div>
-        <div className="">
-          <Suspense fallback={<p>Loading image gallery...</p>}>
-            <ImageGallery params={store.images} />
-          </Suspense>
+        <div>
+          <div className="p-3 flex font-bold font-sans text-5xl">Gallery</div>
+          <div className="">
+            <Suspense fallback={<p>Loading image gallery...</p>}>
+              <ImageGallery params={store.images} />
+            </Suspense>
+          </div>
         </div>
       </div>
     </>

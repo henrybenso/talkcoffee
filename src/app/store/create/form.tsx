@@ -34,9 +34,9 @@ enum DineTypes {
 
 export default function Form() {
   const [store, storeUpdate] = useImmer({
-    name: "",
-    rating: "5",
-    instagramHandle: "",
+    name: '',
+    rating: '',
+    instagramHandle: '',
     dine: {
       table: false,
       bar: false,
