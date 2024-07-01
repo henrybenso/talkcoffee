@@ -34,9 +34,9 @@ enum DineTypes {
 
 export default function Form() {
   const [store, storeUpdate] = useImmer({
-    name: '',
-    rating: '',
-    instagramHandle: '',
+    name: "",
+    rating: "",
+    instagramHandle: "",
     dine: {
       table: false,
       bar: false,
@@ -109,7 +109,7 @@ export default function Form() {
   return (
     <>
       <form onSubmit={handleGetValues} className="space-y-8 py-8">
-        <div className="flex flex-wrap gap-4 place-content-evenly">
+        <div className="flex flex-wrap gap-4">
           <div className="grow space-y-2">
             <Label>Store Name</Label>
             <form.InputField

@@ -13,8 +13,8 @@ export default function AvatarImage({
             <img
               className="rounded-full"
               src={params.avatarId}
-              width="200"
-              height="200"
+              width="400"
+              height="400"
               sizes="100vw"
               alt="image of store"
             />

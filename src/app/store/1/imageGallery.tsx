@@ -13,7 +13,7 @@ export default function ImageGallery({
 }) {
   return (
     <>
-      <div className="p-3 snap-x overflow-x-auto flex h-96 w-full overflow-hidden">
+      <div className="snap-x overflow-x-auto flex h-96 w-full overflow-hidden">
         {params.map((image, index) => (
           <div className="snap-center flex-none grid content-center">
             {/* <CldImage
